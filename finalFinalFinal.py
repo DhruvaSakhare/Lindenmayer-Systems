@@ -20,6 +20,7 @@ from matplotlib import pyplot as plt
 def LindIter(System, N):
     '''
     Computes the Lindenmayer String after N iterations.
+    
     :param System: The type of system the user wants to compute.
     :param N: The number of iterations.
     :return: LindenmayerString,It is the final Lindenmayer String after N iterations.
@@ -36,6 +37,7 @@ def LindIter(System, N):
     def LindString(string):
         '''
         Translates string according to rules dictionary, for example it converts S to SLSRSLS.
+        
         :param string: String that needs to be translated.
         :return: Translated String
         '''
@@ -52,16 +54,10 @@ def LindIter(System, N):
     return LindenmayerString
 
 
-'''
-The turtleGraph(LindenmayerString,N) function determines the plot commands from the Lindenmayer String, which was computed by LindIter(System, N).
-It does this by translating the string into commands based on the commands dictionary, which is unique to the system.
-LindenmayerString: The Lindmayer String computed before.
-N: The number of iterations.
-'''
-
 def turtleGraph(LindenmayerString,N):
     '''
     The function determines the plot commands from the Lindenmayer String, which was computed by LindIter(System, N).
+    
     :param LindenmayerString: The lindenmayer string computed by LindIter.
     :param N: The number of iterations.
     :return: turtleCommands, An array of numbers which signify the distance and angle the to plot the graph.
@@ -69,13 +65,15 @@ def turtleGraph(LindenmayerString,N):
 
     turtleCommands = []
     if LindenmayerString[0] == "S":  # As S is always the first letter of Koch system.
-        kochCommands = {"S": (1/3 ** N), "L": (np.pi / 3), "R": (-2*np.pi/3)}  # commands
+        kochCommands = {"S": (1/3 ** N), "L": (np.pi / 3), "R": (-2*np.pi/3)}  # commands dictionary
+        # Translating the Lindenmayer string into comments
         for letter in LindenmayerString[:]:
             LindenmayerString = kochCommands[letter]
             turtleCommands.append(LindenmayerString)
 
     elif LindenmayerString[0] == "A" or "B":  # As the first letter of Sierpinski system can be A or B.
-        sierpinskiCommands = {"A": (1/2**N), "B": (1/2**N), "L": (np.pi/3), "R": (-np.pi/3)}  # commands
+        sierpinskiCommands = {"A": (1/2**N), "B": (1/2**N), "L": (np.pi/3), "R": (-np.pi/3)}  # commands dictionary
+        # Translating the Lindenmayer string into comments
         for letter in LindenmayerString[:]:
             LindenmayerString = sierpinskiCommands[letter]
             turtleCommands.append(LindenmayerString)
@@ -83,13 +81,10 @@ def turtleGraph(LindenmayerString,N):
     return turtleCommands
 
 
-'''
-The turtlePlot(turtleCommands) uses the commands computed in turtleGraph(LindenmayerString,N) to plot the final graph.
-turtleCommands: An array of numbers which signify the distance and angle the "turtle" should move to plot the graph. Computed by turtleGraph(LindenmayerString,N).
-'''
 def turtlePlot(turtleCommands):
     '''
     This function uses the commands computed in turtleGraph(LindenmayerString,N) to plot the final graph.
+    
     :param turtleCommands: An array of numbers which signify the distance and angle the to plot the graph.
     :return: Outputs plot.
     '''
@@ -130,7 +125,6 @@ while True:
     # The input is first put into a temp file to troubleshoot whatever the user inputted. It will check if its an int or random inputs.
     temp = input("Enter your option: ")
 
-
     # This attempts to check if it is an integer
     try:
         option = int(temp)
@@ -140,20 +134,18 @@ while True:
         # The choice made must be an integer, and we give it some conditions through if-statements.
         option = 4  # Because it is not an integer, we still have to initialize option, we chose 4 as a random integer that isn't one of the options.
 
-
     # Hard cases for each option
     valid = 0
 
     # Option 1 is the system choices and iterations
     if option == 1:
-
+        
         # Attempt to get a valid number, valid is the condition that there is a valid input
         # We initialize the "failsafe"  where if valid is not 0, a problem has occurred.
         valid = 0
 
         # Runs a loop if the question is not fulfilled using the valid variable, in this case, type of Lindermayer system
         while (valid == 0):
-
 
             # Unlike valid, this is a specific case of error that is solved with the variable "problem" to solve if there was no previous load data.
             problem = 0
@@ -164,10 +156,8 @@ while True:
             except:
                 problem = 1
 
-
             # A temp file to hold whatever the user inputted again.
-            temp = input(
-                "\nChoose the type of Lindenmayer system:\n 1.Koch System\n 2.Sierpinski System\nTo cancel, type 'cancel'\n\nEnter your option: ")
+            temp = input("\nChoose the type of Lindenmayer system:\n 1.Koch System\n 2.Sierpinski System\nTo cancel, type 'cancel'\n\nEnter your option: ")
 
             # Added a cancel feature if the user ever chooses to.
             if temp == 'cancel':
@@ -181,7 +171,6 @@ while True:
                 print("\nPlease enter an integer option.")
                 # Similarly to the "option" variable, we want to make sure it is none of the options because we still need to initialize the variable.
                 systemChoice = 0
-
 
             # Selects the different choices available, 1 for Koch, 2 for Sierpinski
             if systemChoice == 1:
@@ -197,20 +186,17 @@ while True:
         # Similar system as the previous question, but asking iterations
         while (valid == 0):
 
-
             # Temp file things, still handles errors and makes it idiot proof
             temp = input("\nHow many iterations would you like? (To cancel, type 'cancel'): ")
 
             # Cancel function will reinput the previous choice, therefore keeping it as a "saved" load
             if temp == 'cancel':
                 if problem != 1:
-
                     # Will input the old input if there was any, defined by problem variable. If problem occurs, skip process
                     System = oldSystem
                 # Valid will return to main menu
                 valid = 1
                 break
-
 
             # This is similar to problem, but for iterations
             iterprob = 0
@@ -226,11 +212,9 @@ while True:
             if iterprob == 0:
                 if N < 0:
                     print("The number of iterations must be positive.")
-
                 # We cannot handle these many iterations, even 9 is occassionally too much for some systems. Therefore we limited it to 9.
                 elif N > 9:
                     print('\nThe number of iterations is limited to 9 to prevent excessive runtime. Please try again.')
-
             # Prints out the final "load" of the loading data process, prints out what was chosen, the menu screen will reappear
                 else:
                     print(
@@ -239,7 +223,6 @@ while True:
                     valid = 1
 
         # The program will bring up the main menu again, asking the 3 possible options
-
 
     # Option 2 is plotting the graph using turtle
     if option == 2:
